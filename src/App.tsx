@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { BrowserRouter, Outlet, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router";
+import { privateRoutes, publicRoutes } from "./router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          {publicRoutes.map((router, index) => {
+            const Page = router.component;
+            return <Route path={router.path} key={index} element={<Page />} />;
+          })}
+
+          <Route element={<CheckUser />}>
+            {privateRoutes.map((router, index) => {
+              const Page = router.component;
+              return (
+                <Route path={router.path} key={index} element={<Page />} />
+              );
+            })}
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
+
+const CheckUser = () => {
+  let user;
+  const value = localStorage.getItem("userInfo");
+  if (typeof value === "string") {
+    user = JSON.parse(value);
+  }
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
 export default App;
