@@ -1,9 +1,16 @@
-import "./App.css";
 import { BrowserRouter, Outlet, Navigate } from "react-router-dom";
-import { Route, Routes } from "react-router";
-import { privateRoutes, publicRoutes } from "./router";
+import { Route, Routes, useNavigate } from "react-router";
+
 import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
+import { getUserWithUid } from "./utils/connectFirebase";
+import { useDispatch, useSelector } from "react-redux/es/exports";
+import { userSelector, userSlice } from "./store/User";
+
+import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+import { privateRoutes, publicRoutes } from "./router";
+import { userInfo } from "os";
 
 function App() {
   return (
@@ -31,12 +38,30 @@ function App() {
 }
 
 const CheckUser = () => {
-  let user;
-  const value = localStorage.getItem("userInfo");
-  if (typeof value === "string") {
-    user = JSON.parse(value);
-  }
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  const { userInfo } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const value = localStorage.getItem("user");
+
+  useEffect(() => {
+    const data = JSON.parse(value as any);
+    const fetchData = async () => {
+      const userData = await getUserWithUid(data.uid);
+      dispatch(userSlice.actions.setUser(userData));
+    };
+    if (typeof value === "string") {
+      fetchData();
+    }
+    if (!Object.keys(userInfo)) {
+      navigate("/login");
+    }
+  }, [value, userInfo]);
+
+  return typeof value === "string" ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" replace />
+  );
 };
 
 export default App;

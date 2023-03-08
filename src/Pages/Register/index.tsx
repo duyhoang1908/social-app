@@ -13,6 +13,8 @@ import { registerSchema } from "../../schema";
 import { UserSignUpData } from "../../types/sign.type";
 import { addDocument } from "../../utils/connectFirebase";
 import { toast } from "react-toastify";
+import { avatar } from "../../utils/constant";
+import { generateKeywords } from "../../utils/func";
 
 const Register = () => {
   const auth = getAuth();
@@ -34,6 +36,7 @@ const Register = () => {
         //update userinfo
         updateProfile(auth.currentUser as User, {
           displayName: data.username,
+          photoURL: avatar,
         });
 
         //add userinfo to collection
@@ -41,6 +44,8 @@ const Register = () => {
           displayName: data.username,
           email: userCredential.user.email,
           uid: userCredential.user.uid,
+          photoURL: avatar,
+          keywords: generateKeywords(data.username),
         });
         toast("Đăng ký thành công");
       })
