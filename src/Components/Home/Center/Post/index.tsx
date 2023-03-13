@@ -7,6 +7,7 @@ import { userSelector } from "../../../../store/User";
 import { IComment, IPosts } from "../../../../types/post.type";
 import { TimeSince } from "../../../../utils/func";
 import { doc, updateDoc } from "firebase/firestore";
+import ImgModal from "../ImgModal";
 
 interface ISinglePost {
   post: IPosts;
@@ -21,6 +22,7 @@ interface ISinglePost {
 const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
   const { userInfo } = useSelector(userSelector);
   const [isShowComment, setIsShowComment] = useState(false);
+  const [isImageModal, setIsImageModal] = useState(false);
   const [comment, setComment] = useState("");
 
   const handleComment = async () => {
@@ -59,7 +61,18 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
         </div>
       </div>
 
-      {post.image && <img src={post.image} alt="image" />}
+      {post.image && (
+        <div onClick={() => setIsImageModal(true)}>
+          <img
+            className="w-full max-h-80 object-cover"
+            src={post.image}
+            alt="image"
+          />
+          {isImageModal && (
+            <ImgModal url={post.image} setIsImageModal={setIsImageModal} />
+          )}
+        </div>
+      )}
 
       {post.content && <div>{post.content}</div>}
 
@@ -67,9 +80,12 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
       <div className="flex">
         <div
           onClick={() => setIsShowComment(!isShowComment)}
-          className="m-auto inline-block px-2 hover:cursor-pointer hover:text-green-600"
+          className="m-auto flex items-center gap-1 px-2 hover:cursor-pointer hover:text-green-600"
         >
-          <FaComment />
+          <FaComment />{" "}
+          {!isShowComment && (
+            <p className="font-semibold text-sm">{`(${post.comment.length})`}</p>
+          )}
         </div>
       </div>
       {isShowComment && (
