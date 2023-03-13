@@ -61,10 +61,12 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
         </div>
       </div>
 
+      {post.content && <div className="text-base my-3">{post.content}</div>}
+
       {post.image && (
         <div onClick={() => setIsImageModal(true)}>
           <img
-            className="w-full max-h-80 object-cover"
+            className="w-full max-h-96 object-cover rounded-2xl hover:cursor-pointer"
             src={post.image}
             alt="image"
           />
@@ -73,8 +75,6 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
           )}
         </div>
       )}
-
-      {post.content && <div>{post.content}</div>}
 
       <div className="w-full h-[1px] bg-black my-4"></div>
       <div className="flex">

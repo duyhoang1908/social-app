@@ -2,6 +2,7 @@ import Chat from "../Pages/Chat";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import SearchResult from "../Pages/SearchResult";
 import UserPage from "../Pages/User";
 
 export const publicRoutes = [
@@ -27,5 +28,9 @@ export const privateRoutes = [
   {
     path: "/message",
     component: Chat,
+  },
+  {
+    path: "/search/:name",
+    component: SearchResult,
   },
 ];

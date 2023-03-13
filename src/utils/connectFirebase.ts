@@ -102,3 +102,28 @@ export const getAllUser = async (uid: string) => {
   });
   return data;
 };
+
+export const searchUserByName = async (name: string) => {
+  let data: any[];
+  data = [];
+  const q = query(
+    collection(db, "user"),
+    where("keywords", "array-contains", name)
+  );
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    data.push({ ...doc.data(), id: doc.id });
+  });
+  return data;
+};
+
+export const getUserPostByUid = async (uid: string) => {
+  let data: any[];
+  data = [];
+  const q = query(collection(db, "posts"), where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    data.push({ ...doc.data(), id: doc.id });
+  });
+  return data;
+};

@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { defaultMessage } from "../../../assets/img";
 import { roomSlice } from "../../../store/Room";
 import { ChatRoom } from "../../../types/chat.type";
 
@@ -21,8 +22,8 @@ const ChatSideBar = ({ listChatRoom }: Props) => {
             onClick={() => handleSelectedRoom(room.id)}
           >
             <img
-              className="w-14 h-14 rounded-full"
-              src="https://scontent.xx.fbcdn.net/v/t39.30808-1/255467711_581273429814239_3269316397525590462_n.jpg?stp=dst-jpg_p100x100&_nc_cat=108&ccb=1-7&_nc_sid=dbb9e7&_nc_ohc=J0_sbvufF8YAX9g-Kp9&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=00_AfBgQTDnwyZdVDV4zR2RezyXhtU37gQtFsVJAHcOpnkwWA&oe=63F0CB84"
+              className="w-14 h-14 object-cover rounded-full"
+              src={defaultMessage}
               alt=""
             />
             <div>
