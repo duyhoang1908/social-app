@@ -2,6 +2,7 @@ import Chat from "../Pages/Chat";
 import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 import Register from "../Pages/Register";
+import UserPage from "../Pages/User";
 
 export const publicRoutes = [
   {
@@ -11,6 +12,10 @@ export const publicRoutes = [
   {
     path: "/register",
     component: Register,
+  },
+  {
+    path: "/user/:uid",
+    component: UserPage,
   },
 ];
 

@@ -1,24 +1,24 @@
 import { nanoid } from "@reduxjs/toolkit";
-
-import React, { useEffect, useState } from "react";
+import { db } from "../../../../firebase/config";
+import { useState } from "react";
 import { FaComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { realtimeDB } from "../../../../firebase/config";
 import { userSelector } from "../../../../store/User";
 import { IComment, IPosts } from "../../../../types/post.type";
 import { TimeSince } from "../../../../utils/func";
-import { ref as realTimeRef, onValue, update } from "firebase/database";
+import { doc, updateDoc } from "firebase/firestore";
 
 interface ISinglePost {
   post: IPosts;
   postID: String;
+  setIsUpdate: Function;
 }
 
-interface IComments {
-  comment: IComment;
-}
+// interface IComments {
+//   comment: IComment;
+// }
 
-const Post = ({ post, postID }: ISinglePost) => {
+const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
   const { userInfo } = useSelector(userSelector);
   const [isShowComment, setIsShowComment] = useState(false);
   const [comment, setComment] = useState("");
@@ -33,13 +33,13 @@ const Post = ({ post, postID }: ISinglePost) => {
       id: nanoid(),
     };
     try {
-      await update(
-        realTimeRef(realtimeDB, "/post/" + postID),
-        post.comment
-          ? { comment: [...post.comment, data] }
-          : { comment: [data] }
-      );
+      const postRef = doc(db, "posts", postID.toString());
+      let cmtData = post.comment ? [...post.comment, data] : [data];
+      await updateDoc(postRef, {
+        comment: cmtData,
+      });
       setComment("");
+      setIsUpdate(null);
     } catch (error) {
       console.log(error);
     }
@@ -72,23 +72,30 @@ const Post = ({ post, postID }: ISinglePost) => {
           <FaComment />
         </div>
       </div>
-      {isShowComment && <CommentList comment={post.comment} />}
-
-      <div className="w-full flex gap-2 mt-3">
-        <img
-          className="w-8 h-8 rounded-full object-cover"
-          src={post.userAvatar}
-          alt=""
-        />
-        <input
-          type="text"
-          className="px-3 py-2 flex-1 bg-inputColor rounded-3xl outline-none text-sm"
-          placeholder="Viết bình luận..."
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleComment()}
-        />
-      </div>
+      {isShowComment && (
+        <div>
+          <CommentList comment={post.comment} />
+          <div className="w-full flex gap-2 mt-3">
+            <img
+              className="w-8 h-8 rounded-full object-cover"
+              src={post.userAvatar}
+              alt=""
+            />
+            <input
+              type="text"
+              className="px-3 py-2 flex-1 bg-inputColor rounded-3xl outline-none text-sm"
+              placeholder="Viết bình luận..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleComment();
+                }
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -99,7 +106,7 @@ const CommentList = ({ comment }: any) => {
       {comment
         ?.sort((a: IComment, b: IComment) => a.createAt - b.createAt)
         .map((item: any) => (
-          <div className="flex gap-2">
+          <div key={item.id} className="flex gap-2">
             <div>
               <img
                 className="w-8 h-8 rounded-full object-cover"

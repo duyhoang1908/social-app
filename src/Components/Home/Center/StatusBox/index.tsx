@@ -7,7 +7,11 @@ import { userSelector } from "../../../../store/User";
 import { IPost } from "../../../../types/post.type";
 import { uploadNewPost } from "../../../../utils/connectFirebase";
 
-const StatusBox = () => {
+interface IStatusBoxProps {
+  setIsUpdate: Function;
+}
+
+const StatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
   const { userInfo } = useSelector(userSelector);
   const dispatch = useDispatch();
   const { statusModal } = useSelector(modalSelector);
@@ -24,12 +28,12 @@ const StatusBox = () => {
         <span>{`${userInfo.displayName} ơi bạn đang nghĩ gì thế?`}</span>
       </div>
 
-      {statusModal && <DeltaiStatusBox />}
+      {statusModal && <DeltaiStatusBox setIsUpdate={setIsUpdate} />}
     </div>
   );
 };
 
-export const DeltaiStatusBox = () => {
+export const DeltaiStatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(userSelector);
 
@@ -72,10 +76,16 @@ export const DeltaiStatusBox = () => {
       resetImg();
       setPostContent("");
       dispatch(modalSlide.actions.toggleStatusModal());
-      toast("Đăng bài thành công!");
+      if (data.image) {
+        toast("Bài đăng đang được xử lý");
+      } else {
+        toast("Đăng bài thành công!");
+      }
     } catch (error) {
       toast("Đã có lỗi xảy ra");
     }
+
+    setIsUpdate(null);
   };
 
   const handleToggleStatusModal = () => {

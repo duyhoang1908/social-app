@@ -72,7 +72,7 @@ const ChatWindow = () => {
       )}
 
       {roomId && (
-        <div className="flex flex-col h-full py-4">
+        <div className="flex flex-col h-full p-4 bg-white">
           <div className="header"></div>
           <div
             ref={messageListRef}
@@ -91,7 +91,6 @@ const ChatWindow = () => {
                       <p className="inline-block px-3 py-2 rounded-3xl bg-green-500 text-white">
                         {item.data.message}
                       </p>
-                      <span>{`${TimeSince(item.data.createAt)} trước`}</span>
                     </div>
                   </div>
                 )}
@@ -99,7 +98,6 @@ const ChatWindow = () => {
                 {item.data.uid === userInfo.uid && (
                   <div className="flex items-center justify-end gap-3">
                     <div className="">
-                      <span>{`${TimeSince(item.data.createAt)} trước`}</span>
                       <p className="inline-block px-3 py-2 rounded-3xl bg-green-500 text-white">
                         {item.data.message}
                       </p>

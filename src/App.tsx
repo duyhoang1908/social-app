@@ -55,7 +55,7 @@ const CheckUser = () => {
     if (!Object.keys(userInfo)) {
       navigate("/login");
     }
-  }, [value, userInfo]);
+  }, [value]);
 
   return typeof value === "string" ? (
     <Outlet />

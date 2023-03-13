@@ -1,41 +1,34 @@
 import { useEffect, useState } from "react";
 import Post from "./Post";
 import StatusBox from "./StatusBox";
-import { ref as realTimeRef, onValue, update } from "firebase/database";
-import { nanoid } from "@reduxjs/toolkit";
-import { realtimeDB } from "../../../firebase/config";
+import { getAllPost } from "../../../utils/connectFirebase";
 
 const Center = () => {
   const [listPost, setListPost] = useState<any[]>();
+  const [isUpdate, setIsUpdate] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      const postRef = realTimeRef(realtimeDB, "post/");
-      let value: any[];
       try {
-        await onValue(postRef, (snapshot) => {
-          value = [];
-          snapshot.forEach((item) => {
-            value.push({
-              id: item.key,
-              data: item.val(),
-            });
-          });
-          value.sort((a, b) => b.data.createAt - a.data.createAt);
-          setListPost(value);
-        });
+        const data = await getAllPost();
+        setListPost(data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, []);
+  }, [isUpdate]);
 
   return (
-    <div className="flex flex-col gap-10 py-3 h-full">
-      <StatusBox />
+    <div className="flex flex-col gap-10 pb-3 h-full">
+      <StatusBox setIsUpdate={setIsUpdate} />
       {listPost &&
         listPost.map((post) => (
-          <Post key={post.id} postID={post.id} post={post.data} />
+          <Post
+            setIsUpdate={setIsUpdate}
+            key={post.id}
+            postID={post.id}
+            post={post}
+          />
         ))}
     </div>
   );

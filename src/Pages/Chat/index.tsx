@@ -27,8 +27,6 @@ const Chat = () => {
     fetchData();
   }, []);
 
-  console.log(Date.now());
-
   return (
     <LayoutWithHeader>
       <div className="flex justify-between h-full">

@@ -6,17 +6,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import {
-  ref as realTimeRef,
-  onValue,
-  set as setRealTime,
-} from "firebase/database";
-
 import { IPost } from "../types/post.type";
 import { toast } from "react-toastify";
-import { set } from "firebase/database";
-import { nanoid } from "@reduxjs/toolkit";
-import { async } from "@firebase/util";
 
 export const addDocument = async (collectionName: string, data: any) => {
   try {
@@ -47,7 +38,7 @@ export const getListRoms = async (uid: string) => {
   );
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    data.push({ ...doc.data(), id: doc.id });
+    data.push({ ...doc.data(), collectionID: doc.id });
   });
   return data;
 };
@@ -68,7 +59,7 @@ export const uploadNewPost = async (data: IPost) => {
     if (!data.content && !data.image) {
       toast("Hãy thêm nội dung cho bài viết!");
     } else if (data.content && !data.image) {
-      await setRealTime(realTimeRef(realtimeDB, "post/" + nanoid()), data);
+      await addDocument("posts", data);
     } else {
       const storage = getStorage();
       const storageRef = ref(storage, `images/${data.image.name}`);
@@ -80,7 +71,7 @@ export const uploadNewPost = async (data: IPost) => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             data.image = downloadURL;
-            setRealTime(realTimeRef(realtimeDB, "post/" + nanoid()), data);
+            addDocument("posts", data);
           });
         }
       );
@@ -88,4 +79,26 @@ export const uploadNewPost = async (data: IPost) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getAllPost = async () => {
+  let data: any[];
+  data = [];
+  const q = query(collection(db, "posts"));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    data.push({ ...doc.data(), id: doc.id });
+  });
+  return data;
+};
+
+export const getAllUser = async (uid: string) => {
+  let data: any[];
+  data = [];
+  const q = query(collection(db, "user"), where("uid", "!=", uid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    data.push({ ...doc.data(), id: doc.id });
+  });
+  return data;
 };

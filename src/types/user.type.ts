@@ -1,5 +1,10 @@
-export interface User {
-  name: string;
+export interface IUser {
+  displayName: string;
+  email: string;
+  id: string;
+  keywords: string[];
+  photoURL: string;
+  uid: string;
 }
 
 export interface LocalStorageUser {

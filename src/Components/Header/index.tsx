@@ -31,7 +31,10 @@ const Header = () => {
         >
           <FaRegCommentDots />
         </Link>
-        <Link to="/" className="p-4 bg-inputColor rounded-full relative group">
+        <Link
+          to={`/user/${userInfo.uid}`}
+          className="p-4 bg-inputColor rounded-full relative group"
+        >
           <FaUserAlt />
           <UserBox />
         </Link>
