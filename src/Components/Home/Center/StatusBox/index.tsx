@@ -19,13 +19,13 @@ const StatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
     dispatch(modalSlide.actions.toggleStatusModal());
   };
   return (
-    <div className="flex items-center gap-4 bg-white px-6 py-6 rounded-2xl shadow-sm">
+    <div className="flex items-center gap-4 bg-white p-4 md:p-6 rounded-2xl shadow-sm">
       <img className="w-10 h-10 rounded-full" src={userInfo.photoURL} alt="" />
       <div
         className="flex-1 px-3 py-2 text-base text-[#65676B] bg-inputColor rounded-3xl hover:bg-gray-200 hover:cursor-pointer"
         onClick={handleToggleStatusModal}
       >
-        <span>{`${userInfo.displayName} ơi bạn đang nghĩ gì thế?`}</span>
+        <span className="text-sm md:text-base">{`${userInfo.displayName} ơi bạn đang nghĩ gì thế?`}</span>
       </div>
 
       {statusModal && <DeltaiStatusBox setIsUpdate={setIsUpdate} />}

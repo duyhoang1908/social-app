@@ -97,16 +97,18 @@ const UserPage = () => {
           id={user?.id || ""}
           setIsUpdate={setIsUpdate}
         />
-        <div className="flex items-center justify-between -translate-y-1/4">
-          <div className="flex items-center gap-5 mb-10">
+        <div className="flex items-center justify-between -translate-y-[20%] md:-translate-y-1/4">
+          <div className="flex items-center gap-3 md:gap-5 mb-10">
             <div className="flex p-3 rounded-full bg-inputColor">
               <img
                 src={user?.photoURL}
                 alt=""
-                className="w-[150px] h-[150px] rounded-full m-auto"
+                className="w-[100px] h-[100px] md:w-[150px] md:h-[150px] rounded-full m-auto"
               />
             </div>
-            <p className="text-3xl font-semibold">{user?.displayName}</p>
+            <p className="text-lg md:text-3xl font-semibold">
+              {user?.displayName}
+            </p>
           </div>
           <div className="flex items-center gap-5">
             {/* {!friendList.includes(uid) && userInfo.uid !== uid && (

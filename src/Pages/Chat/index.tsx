@@ -15,6 +15,7 @@ import ChatWindow from "../../Components/Chat/ChatWindow";
 const Chat = () => {
   const { userInfo } = useSelector(userSelector);
   const [listRoom, setListRoom] = useState<ChatRoom[]>();
+  const [showRoomList, setShowRoomList] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,12 +29,19 @@ const Chat = () => {
 
   return (
     <LayoutWithHeader>
-      <div className="flex justify-between h-full gap-5 py-3">
-        <div className="w-1/3 rounded-2xl overflow-hidden">
-          <ChatSideBar listChatRoom={listRoom} />
+      <div className="flex justify-between h-full md:gap-5 py-3">
+        <div
+          className={`${
+            showRoomList ? "w-full md:w-1/3" : "hidden md:  w-1/3"
+          } rounded-2xl overflow-hidden`}
+        >
+          <ChatSideBar
+            listChatRoom={listRoom}
+            setShowRoomList={setShowRoomList}
+          />
         </div>
         <div className="flex-1 rounded-2xl overflow-hidden">
-          <ChatWindow />
+          <ChatWindow setShowRoomList={setShowRoomList} />
         </div>
       </div>
     </LayoutWithHeader>

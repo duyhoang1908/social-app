@@ -15,7 +15,7 @@ const LayoutWithHeader = ({ children }: Props) => {
   }, []);
 
   return (
-    <div className="bg-primaryBg ">
+    <div className="bg-primaryBg">
       <div ref={ref} className="shadow-sm bg-white">
         <Header></Header>
       </div>

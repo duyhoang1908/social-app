@@ -45,10 +45,9 @@ const BackgroundImage = ({ url, id, uid, setIsUpdate }: IProps) => {
   };
 
   return (
-    <div className="w-full h-[350px] bg-[#e3e3e3] rounded-2xl overflow-hidden relative">
+    <div className="w-full h-[200px] md:h-[350px] bg-[#e3e3e3] rounded-2xl overflow-hidden relative">
       {imgPreview && (
         <div>
-          {" "}
           <img src={imgPreview} alt="preview" className="w-full object-cover" />
           <div className="absolute z-10 bottom-5 right-5 flex items-center gap-5">
             <button
@@ -70,7 +69,7 @@ const BackgroundImage = ({ url, id, uid, setIsUpdate }: IProps) => {
         <div className="flex w-full h-full">
           <label
             htmlFor="bg-img"
-            className="m-auto text-2xl font-semibold text-[#65676B] hover:cursor-pointer"
+            className="m-auto text-lg md:text-2xl font-semibold text-[#65676B] hover:cursor-pointer"
           >
             Thêm ảnh nền.
           </label>{" "}

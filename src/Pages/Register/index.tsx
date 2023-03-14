@@ -68,8 +68,8 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-between">
-      <div className="lg:w-2/5 px-4 py-10">
+    <div className="flex flex-col lg:flex-row justify-between">
+      <div className="lg:w-2/5 px-4 py-10 order-2 lg:order-1">
         <img
           className="w-32 mt-12"
           src="https://www.gapo.vn/assets/images/logo%20gapo.svg"
@@ -120,7 +120,7 @@ const Register = () => {
           </Link>
         </div>
       </div>
-      <div className="lg:w-3/5">
+      <div className="lg:w-3/5 order-1 lg:order-2">
         <img
           className="w-full object-cover"
           src="https://www.gapo.vn/assets/images/right-cover.jpg"

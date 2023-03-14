@@ -6,10 +6,14 @@ import { userSelector } from "../../../store/User";
 import { ref, onValue, set } from "firebase/database";
 import { nanoid } from "@reduxjs/toolkit";
 import { TimeSince } from "../../../utils/func";
-import { FaTelegramPlane } from "react-icons/fa";
+import { FaSignOutAlt, FaTelegramPlane } from "react-icons/fa";
 import { defaultUserAvatar } from "../../../assets/img";
 
-const ChatWindow = () => {
+interface IProps {
+  setShowRoomList: Function;
+}
+
+const ChatWindow = ({ setShowRoomList }: IProps) => {
   const { roomId } = useSelector(roomsSelector);
   const { userInfo } = useSelector(userSelector);
 
@@ -73,7 +77,11 @@ const ChatWindow = () => {
 
       {roomId && (
         <div className="flex flex-col h-full p-4 bg-white">
-          <div className="header"></div>
+          <div className="md:hidden flex justify-end">
+            <span className="p-2" onClick={() => setShowRoomList(true)}>
+              <FaSignOutAlt />
+            </span>
+          </div>
           <div
             ref={messageListRef}
             className="flex flex-col flex-1 overflow-auto"

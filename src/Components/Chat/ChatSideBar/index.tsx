@@ -5,12 +5,14 @@ import { ChatRoom } from "../../../types/chat.type";
 
 interface Props {
   listChatRoom: any;
+  setShowRoomList: Function;
 }
 
-const ChatSideBar = ({ listChatRoom }: Props) => {
+const ChatSideBar = ({ listChatRoom, setShowRoomList }: Props) => {
   const dispatch = useDispatch();
   const handleSelectedRoom = (id: string) => {
     dispatch(roomSlice.actions.setRoomId(id));
+    setShowRoomList(false);
   };
   return (
     <div className="px-4 py-10 h-full bg-white">

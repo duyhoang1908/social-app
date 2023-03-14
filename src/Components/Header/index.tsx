@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  FaBars,
   FaRegCommentDots,
   FaSearch,
   FaSignOutAlt,
@@ -13,8 +14,8 @@ const Header = () => {
   const { userInfo } = useSelector(userSelector);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [search, setSearch] = useState("");
+  const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   const handleLogout = () => {
     dispatch(userSlice.actions.setUser({}));
@@ -23,15 +24,15 @@ const Header = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-5">
+    <div className="flex justify-between items-center px-5 py-3 md:py-0 gap-3">
       <Link to="/">
         <img
           src="https://doanhnghiep.quocgiakhoinghiep.vn/wp-content/uploads/2020/08/26-1.png"
           alt="logo"
-          className="w-56"
+          className="w-24 md:w-56"
         />
       </Link>
-      <div className="w-1/3">
+      <div className="flex-1">
         <form
           className="flex bg-inputColor items-center p-2 px-3 rounded-full gap-2"
           onSubmit={() => {
@@ -50,7 +51,7 @@ const Header = () => {
           />
         </form>
       </div>
-      <div className="flex gap-5">
+      <div className="hidden md:flex gap-5 ">
         <Link
           to={`/message?uid=${userInfo.uid}`}
           className="p-4 bg-inputColor rounded-full"
@@ -69,6 +70,37 @@ const Header = () => {
         >
           <FaSignOutAlt />
         </button>
+      </div>
+
+      <div
+        onClick={() => setShowMenuMobile(!showMenuMobile)}
+        className="md:hidden p-1 relative"
+      >
+        <FaBars />
+        <div
+          className={`${
+            showMenuMobile ? "flex flex-col" : "hidden"
+          } gap-5 absolute z-50 top-10 right-0 bg-white py-2 px-5 shadow-lg`}
+        >
+          <Link
+            to={`/message?uid=${userInfo.uid}`}
+            className="p-4 bg-inputColor rounded-full"
+          >
+            <FaRegCommentDots />
+          </Link>
+          <Link
+            to={`/user/${userInfo.uid}`}
+            className="p-4 bg-inputColor rounded-full"
+          >
+            <FaUserAlt />
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="p-4 bg-inputColor rounded-full"
+          >
+            <FaSignOutAlt />
+          </button>
+        </div>
       </div>
     </div>
   );

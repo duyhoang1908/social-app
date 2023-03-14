@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <LayoutWithHeader>
       <div className="flex justify-between h-full p-4 gap-5">
-        <div className="w-3/4 h-full overflow-y-auto">
+        <div className="lg:w-3/4 md:w-2/3 w-full h-full overflow-y-auto">
           <Center />
         </div>
         <div className="flex-1 h-full overflow-y-auto">
