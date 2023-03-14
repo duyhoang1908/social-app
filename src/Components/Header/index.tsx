@@ -44,6 +44,7 @@ const Header = () => {
           <input
             type="text"
             className="bg-transparent flex-1 outline-none"
+            placeholder="Tìm kiếm bạn bè..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />

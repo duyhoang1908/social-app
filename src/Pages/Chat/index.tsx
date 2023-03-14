@@ -13,7 +13,6 @@ import ChatSideBar from "../../Components/Chat/ChatSideBar";
 import ChatWindow from "../../Components/Chat/ChatWindow";
 
 const Chat = () => {
-  const dispatch = useDispatch();
   const { userInfo } = useSelector(userSelector);
   const [listRoom, setListRoom] = useState<ChatRoom[]>();
 
@@ -29,11 +28,11 @@ const Chat = () => {
 
   return (
     <LayoutWithHeader>
-      <div className="flex justify-between h-full">
-        <div className="w-1/3">
+      <div className="flex justify-between h-full gap-5 py-3">
+        <div className="w-1/3 rounded-2xl overflow-hidden">
           <ChatSideBar listChatRoom={listRoom} />
         </div>
-        <div className="w-2/3">
+        <div className="flex-1 rounded-2xl overflow-hidden">
           <ChatWindow />
         </div>
       </div>

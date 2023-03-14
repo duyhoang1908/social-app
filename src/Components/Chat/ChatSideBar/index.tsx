@@ -13,11 +13,11 @@ const ChatSideBar = ({ listChatRoom }: Props) => {
     dispatch(roomSlice.actions.setRoomId(id));
   };
   return (
-    <div className="px-4 py-10 h-full border-r border-[#9c9c9c]">
+    <div className="px-4 py-10 h-full bg-white">
       {listChatRoom &&
         listChatRoom.map((room: ChatRoom) => (
           <div
-            className="flex items-center gap-5 p-2 hover:bg-slate-200 hover:cursor-pointer"
+            className="flex items-center gap-5 p-2 hover:bg-slate-200 hover:cursor-pointer rounded-2xl"
             key={room.id}
             onClick={() => handleSelectedRoom(room.id)}
           >

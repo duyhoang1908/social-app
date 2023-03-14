@@ -7,7 +7,7 @@ const RightBar = () => {
 
   return (
     <div className="bg-white h-full overflow-y-auto px-4 py-3 rounded-2xl">
-      <h2 className="text-lg font-semibold">Danh sách bạn bè</h2>
+      {/* <h2 className="text-lg font-semibold">Danh sách bạn bè</h2>
       {(friendList.length as number) <= 0 && (
         <div className="pt-4 pb-6">Chưa có người bạn nào, hãy kết bạn nào.</div>
       )}
@@ -28,7 +28,7 @@ const RightBar = () => {
               {user.displayName}
             </h4>
           </div>
-        ))}
+        ))} */}
 
       <h2 className="text-lg font-semibold">Các người dùng quanh bạn</h2>
       <FriendList />

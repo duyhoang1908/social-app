@@ -120,7 +120,7 @@ const UserPage = () => {
             <p className="text-3xl font-semibold">{user?.displayName}</p>
           </div>
           <div className="flex items-center gap-5">
-            {!friendList.includes(uid) && userInfo.uid !== uid && (
+            {/* {!friendList.includes(uid) && userInfo.uid !== uid && (
               <button
                 onClick={() =>
                   addFriend({
@@ -134,7 +134,7 @@ const UserPage = () => {
               >
                 Kết bạn
               </button>
-            )}
+            )} */}
 
             {uid !== userInfo.uid && (
               <button

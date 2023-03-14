@@ -15,12 +15,12 @@ const LayoutWithHeader = ({ children }: Props) => {
   }, []);
 
   return (
-    <div>
-      <div ref={ref} className="shadow-sm">
+    <div className="bg-primaryBg ">
+      <div ref={ref} className="shadow-sm bg-white">
         <Header></Header>
       </div>
       <div
-        className="bg-primaryBg"
+        className="max-w-[1200px] m-auto"
         style={{ height: `calc(100vh - ${height}px)` }}
       >
         {children}

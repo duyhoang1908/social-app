@@ -1,7 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCreateMess from "../../../../hooks/useCreateMess";
 import { userSelector } from "../../../../store/User";
 import { IUser } from "../../../../types/user.type";
@@ -56,8 +56,8 @@ const FriendList = () => {
     <div className="flex flex-col mt-5">
       {list &&
         list.map((user: IUser) => (
-          <div
-            onClick={() => createNewMessage(user.uid)}
+          <Link
+            to={`/user/${user.uid}`}
             key={user.uid}
             className="flex gap-2 py-2 items-center hover:cursor-pointer"
           >
@@ -69,7 +69,7 @@ const FriendList = () => {
             <h4 className="text-base hover:font-semibold">
               {user.displayName}
             </h4>
-          </div>
+          </Link>
         ))}
     </div>
   );
