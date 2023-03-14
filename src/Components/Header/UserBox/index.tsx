@@ -4,11 +4,11 @@ import { userSlice } from "../../../store/User";
 
 const UserBox = () => {
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const handleLogout = () => {
     dispatch(userSlice.actions.setUser({}));
     localStorage.removeItem("user");
-    history("/login");
+    navigate("/login");
   };
   return (
     <div className="hidden absolute top-full right-0 min-w-[200px] rounded-2xl shadow-sm bg-white border py-2 px-4 group-hover:block">

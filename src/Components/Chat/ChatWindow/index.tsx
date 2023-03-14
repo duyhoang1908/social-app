@@ -31,7 +31,7 @@ const ChatWindow = () => {
               data: item.val(),
             });
           });
-          value.sort((a, b) => b.data.createAt - a.data.createAt);
+          value.sort((a, b) => a.data.createAt - b.data.createAt);
           setContent(value);
         });
       } catch (error) {

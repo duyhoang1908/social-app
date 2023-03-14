@@ -73,12 +73,14 @@ const SearchResult = () => {
                     {user.displayName}
                   </p>
                 </div>
-                <button
-                  onClick={() => createNewMessage(user.uid)}
-                  className="px-3 py-2 bg-green-500 hover:bg-green-600 text-base text-white font-semibold rounded-2xl"
-                >
-                  Nhắn tin
-                </button>
+                {userInfo.uid !== user.uid && (
+                  <button
+                    onClick={() => createNewMessage(user.uid)}
+                    className="px-3 py-2 bg-green-500 hover:bg-green-600 text-base text-white font-semibold rounded-2xl"
+                  >
+                    Nhắn tin
+                  </button>
+                )}
               </Link>
             ))}
           </div>

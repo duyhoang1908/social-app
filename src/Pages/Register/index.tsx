@@ -46,6 +46,7 @@ const Register = () => {
           uid: userCredential.user.uid,
           photoURL: avatar,
           keywords: generateKeywords(data.username),
+          friendList: [],
         });
         toast("Đăng ký thành công");
       })

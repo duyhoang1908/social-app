@@ -76,7 +76,7 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
         </div>
       )}
 
-      <div className="w-full h-[1px] bg-black my-4"></div>
+      <div className="w-full h-[1px] bg-slate-200 my-4"></div>
       <div className="flex">
         <div
           onClick={() => setIsShowComment(!isShowComment)}
@@ -135,7 +135,7 @@ const CommentList = ({ comment }: any) => {
                 <h3 className="font-semibold text-sm">{item.userName}</h3>
                 <p className="text-sm">{item.content}</p>
               </div>
-              <p className="text-sm px-4">{`${TimeSince(
+              <p className="text-xs px-4">{`${TimeSince(
                 item.createAt
               )} trước.`}</p>
             </div>

@@ -1,14 +1,26 @@
 import { useState } from "react";
-import { FaRegCommentDots, FaSearch, FaUserAlt } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import {
+  FaRegCommentDots,
+  FaSearch,
+  FaSignOutAlt,
+  FaUserAlt,
+} from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { userSelector } from "../../store/User";
-import UserBox from "./UserBox";
+import { userSelector, userSlice } from "../../store/User";
 
 const Header = () => {
   const { userInfo } = useSelector(userSelector);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState("");
+
+  const handleLogout = () => {
+    dispatch(userSlice.actions.setUser({}));
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <div className="flex justify-between items-center px-5">
@@ -46,11 +58,16 @@ const Header = () => {
         </Link>
         <Link
           to={`/user/${userInfo.uid}`}
-          className="p-4 bg-inputColor rounded-full relative group"
+          className="p-4 bg-inputColor rounded-full"
         >
           <FaUserAlt />
-          <UserBox />
         </Link>
+        <button
+          onClick={handleLogout}
+          className="p-4 bg-inputColor rounded-full"
+        >
+          <FaSignOutAlt />
+        </button>
       </div>
     </div>
   );

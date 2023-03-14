@@ -1,25 +1,32 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Post from "../../Components/Home/Center/Post";
 import LayoutWithHeader from "../../Layouts/LayoutWithHeader";
-import { userSelector } from "../../store/User";
+import { userSelector, userSlice } from "../../store/User";
 import {
   addDocument,
   getListRoms,
   getUserPostByUid,
   getUserWithUid,
 } from "../../utils/connectFirebase";
+import { IAddFriend } from "../../types/user.type";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { toast } from "react-toastify";
 
 const UserPage = () => {
   const { uid } = useParams();
-  const { userInfo } = useSelector(userSelector);
+  const { userInfo, friendList } = useSelector(userSelector);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState<any>();
   const [userPost, setUserPost] = useState<any[]>();
   const [isUpdate, setIsUpdate] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -58,6 +65,22 @@ const UserPage = () => {
     }
   };
 
+  const addFriend = async (data: IAddFriend) => {
+    try {
+      const userRef = doc(db, "user", userInfo.id);
+      let fList = friendList ? [...friendList, data] : [data];
+      await updateDoc(userRef, {
+        friendList: fList,
+      });
+      dispatch(userSlice.actions.setFriendList(fList));
+      toast("Đã thêm bạn.");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const createNewMessage = useCreateMess();
+
   return (
     <LayoutWithHeader>
       <div className="max-w-[1200px] h-full overflow-y-auto m-auto p-4">
@@ -73,7 +96,7 @@ const UserPage = () => {
               <input type="file" name="bg-img" id="" className="hidden" />
             </div>
           )} */}
-          {userInfo.uid === user.uid && (
+          {userInfo.uid === uid && (
             <div className="flex w-full h-full">
               <label
                 htmlFor="bg-img"
@@ -96,14 +119,32 @@ const UserPage = () => {
             </div>
             <p className="text-3xl font-semibold">{user?.displayName}</p>
           </div>
-          {uid !== userInfo.uid && (
-            <button
-              onClick={() => createNewMessage(uid as string)}
-              className="bg-green-500 hover:bg-green-600 text-lg font-semibold text-white px-5 py-3 rounded-2xl"
-            >
-              Nhắn tin
-            </button>
-          )}
+          <div className="flex items-center gap-5">
+            {!friendList.includes(uid) && userInfo.uid !== uid && (
+              <button
+                onClick={() =>
+                  addFriend({
+                    displayName: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    uid: user.photoURL,
+                  })
+                }
+                className="bg-green-500 hover:bg-green-600 text-lg font-semibold text-white px-5 py-3 rounded-2xl"
+              >
+                Kết bạn
+              </button>
+            )}
+
+            {uid !== userInfo.uid && (
+              <button
+                onClick={() => createNewMessage(uid as string)}
+                className="bg-green-500 hover:bg-green-600 text-lg font-semibold text-white px-5 py-3 rounded-2xl"
+              >
+                Nhắn tin
+              </button>
+            )}
+          </div>
         </div>
 
         {(userPost?.length as number) > 0 &&

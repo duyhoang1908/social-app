@@ -11,6 +11,7 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { privateRoutes, publicRoutes } from "./router";
 import { userInfo } from "os";
+import { IUser } from "./types/user.type";
 
 function App() {
   return (
