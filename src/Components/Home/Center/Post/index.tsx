@@ -8,6 +8,7 @@ import { IComment, IPosts } from "../../../../types/post.type";
 import { TimeSince } from "../../../../utils/func";
 import { doc, updateDoc } from "firebase/firestore";
 import ImgModal from "../ImgModal";
+import { Link } from "react-router-dom";
 
 interface ISinglePost {
   post: IPosts;
@@ -56,7 +57,9 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
           alt="avatar"
         />
         <div className="flex flex-col">
-          <p className="text-base font-semibold">{post.userName}</p>
+          <Link to={`/user/${post.uid}`} className="text-base font-semibold">
+            {post.userName}
+          </Link>
           <p className="text-sm">{`${TimeSince(post.createAt)} trước.`}</p>
         </div>
       </div>
@@ -132,7 +135,12 @@ const CommentList = ({ comment }: any) => {
             </div>
             <div className="flex flex-col">
               <div className="px-4 py-2 bg-inputColor rounded-2xl">
-                <h3 className="font-semibold text-sm">{item.userName}</h3>
+                <Link
+                  to={`/user/${item.uid}`}
+                  className="font-semibold text-sm"
+                >
+                  {item.userName}
+                </Link>
                 <p className="text-sm">{item.content}</p>
               </div>
               <p className="text-xs px-4">{`${TimeSince(
