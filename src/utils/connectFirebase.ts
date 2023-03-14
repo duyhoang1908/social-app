@@ -1,4 +1,12 @@
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db, realtimeDB } from "../firebase/config";
 import {
   getDownloadURL,
@@ -126,4 +134,23 @@ export const getUserPostByUid = async (uid: string) => {
     data.push({ ...doc.data(), id: doc.id });
   });
   return data;
+};
+
+export const updateBackgroundImage = async (img: any, id: string) => {
+  const userRef = doc(db, "user", id);
+  const storage = getStorage();
+  const storageRef = ref(storage, `images/${img.name}`);
+  const uploadTask = uploadBytesResumable(storageRef, img);
+  uploadTask.on(
+    "state_changed",
+    () => {},
+    () => {},
+    () => {
+      getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        updateDoc(userRef, {
+          backgroundImage: downloadURL,
+        });
+      });
+    }
+  );
 };

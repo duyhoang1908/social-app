@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Post from "../../Components/Home/Center/Post";
+import BackgroundImage from "../../Components/UserPage/BackgroundImage";
 import LayoutWithHeader from "../../Layouts/LayoutWithHeader";
 import { userSelector, userSlice } from "../../store/User";
 import {
@@ -12,16 +13,11 @@ import {
   getUserPostByUid,
   getUserWithUid,
 } from "../../utils/connectFirebase";
-import { IAddFriend } from "../../types/user.type";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import { toast } from "react-toastify";
 
 const UserPage = () => {
   const { uid } = useParams();
-  const { userInfo, friendList } = useSelector(userSelector);
+  const { userInfo } = useSelector(userSelector);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [user, setUser] = useState<any>();
   const [userPost, setUserPost] = useState<any[]>();
@@ -40,7 +36,7 @@ const UserPage = () => {
     };
 
     fetchData();
-  }, [uid]);
+  }, [uid, isUpdate]);
 
   const createNewMessage = async (uid: string) => {
     const data = {
@@ -65,27 +61,25 @@ const UserPage = () => {
     }
   };
 
-  const addFriend = async (data: IAddFriend) => {
-    try {
-      const userRef = doc(db, "user", userInfo.id);
-      let fList = friendList ? [...friendList, data] : [data];
-      await updateDoc(userRef, {
-        friendList: fList,
-      });
-      dispatch(userSlice.actions.setFriendList(fList));
-      toast("Đã thêm bạn.");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // const createNewMessage = useCreateMess();
+  // const addFriend = async (data: IAddFriend) => {
+  //   try {
+  //     const userRef = doc(db, "user", userInfo.id);
+  //     let fList = friendList ? [...friendList, data] : [data];
+  //     await updateDoc(userRef, {
+  //       friendList: fList,
+  //     });
+  //     dispatch(userSlice.actions.setFriendList(fList));
+  //     toast("Đã thêm bạn.");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <LayoutWithHeader>
       <div className="max-w-[1200px] h-full overflow-y-auto m-auto p-4">
-        <div className="w-full h-[350px] bg-[#e3e3e3] rounded-2xl overflow-hidden">
-          {/* {user.backgroundImage && (
+        {/* <div className="">
+          {user.backgroundImage && (
             <img src={userInfo.backgroundImage} alt="backgroundImage" />
           )}
           {!user.backgroundImage && (
@@ -95,19 +89,14 @@ const UserPage = () => {
               </label>{" "}
               <input type="file" name="bg-img" id="" className="hidden" />
             </div>
-          )} */}
-          {userInfo.uid === uid && (
-            <div className="flex w-full h-full">
-              <label
-                htmlFor="bg-img"
-                className="m-auto text-2xl font-semibold text-[#65676B]"
-              >
-                Thêm ảnh nền.
-              </label>{" "}
-              <input type="file" name="bg-img" id="" className="hidden" />
-            </div>
           )}
-        </div>
+        </div> */}
+        <BackgroundImage
+          url={user?.backgroundImage || ""}
+          uid={uid}
+          id={user?.id || ""}
+          setIsUpdate={setIsUpdate}
+        />
         <div className="flex items-center justify-between -translate-y-1/4">
           <div className="flex items-center gap-5 mb-10">
             <div className="flex p-3 rounded-full bg-inputColor">
