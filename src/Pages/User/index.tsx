@@ -61,13 +61,39 @@ const UserPage = () => {
   return (
     <LayoutWithHeader>
       <div className="max-w-[1200px] h-full overflow-y-auto m-auto p-4">
-        <div className="flex items-center justify-between">
+        <div className="w-full h-[350px] bg-[#e3e3e3] rounded-2xl overflow-hidden">
+          {/* {user.backgroundImage && (
+            <img src={userInfo.backgroundImage} alt="backgroundImage" />
+          )}
+          {!user.backgroundImage && (
+            <div className="flex w-full h-full">
+              <label htmlFor="bg-img" className="">
+                Thêm ảnh nền.
+              </label>{" "}
+              <input type="file" name="bg-img" id="" className="hidden" />
+            </div>
+          )} */}
+          {userInfo.uid === user.uid && (
+            <div className="flex w-full h-full">
+              <label
+                htmlFor="bg-img"
+                className="m-auto text-2xl font-semibold text-[#65676B]"
+              >
+                Thêm ảnh nền.
+              </label>{" "}
+              <input type="file" name="bg-img" id="" className="hidden" />
+            </div>
+          )}
+        </div>
+        <div className="flex items-center justify-between -translate-y-1/4">
           <div className="flex items-center gap-5 mb-10">
-            <img
-              src={user?.photoURL}
-              alt=""
-              className="w-[150px] h-[150px] rounded-full"
-            />
+            <div className="flex p-3 rounded-full bg-inputColor">
+              <img
+                src={user?.photoURL}
+                alt=""
+                className="w-[150px] h-[150px] rounded-full m-auto"
+              />
+            </div>
             <p className="text-3xl font-semibold">{user?.displayName}</p>
           </div>
           {uid !== userInfo.uid && (
@@ -89,6 +115,12 @@ const UserPage = () => {
               setIsUpdate={setIsUpdate}
             ></Post>
           ))}
+
+        {(userPost?.length as number) <= 0 && (
+          <div className="text-xl text-center text-[#65676B] py-10 mb-10">
+            Người dùng chưa có bài viết nào.
+          </div>
+        )}
       </div>
     </LayoutWithHeader>
   );

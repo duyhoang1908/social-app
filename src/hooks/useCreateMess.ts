@@ -7,7 +7,7 @@ import { addDocument, getListRoms } from "../utils/connectFirebase";
 const useCreateMess = async (uid: string) => {
   const navigate = useNavigate();
   const { userInfo } = useSelector(userSelector);
-  console.log("ok");
+
   const data = {
     members: [userInfo.uid, uid],
     id: nanoid(),
