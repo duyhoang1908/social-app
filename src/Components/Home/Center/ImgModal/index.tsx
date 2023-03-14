@@ -11,7 +11,7 @@ const ImgModal = ({ url, setIsImageModal }: IImgModal) => {
         setIsImageModal(false);
       }}
     >
-      <div className="w-4/5 h-5/6 m-auto">
+      <div className="w-10/12 md:w-4/5 md:h-5/6 m-auto">
         <img
           src={url}
           alt=""

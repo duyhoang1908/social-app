@@ -32,7 +32,7 @@ const Header = () => {
           className="w-24 md:w-56"
         />
       </Link>
-      <div className="flex-1">
+      <div className="w-2/3 md:w-1/3">
         <form
           className="flex bg-inputColor items-center p-2 px-3 rounded-full gap-2"
           onSubmit={() => {
