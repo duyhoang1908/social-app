@@ -5,7 +5,6 @@ import { roomsSelector } from "../../../store/Room";
 import { userSelector } from "../../../store/User";
 import { ref, onValue, set } from "firebase/database";
 import { nanoid } from "@reduxjs/toolkit";
-import { TimeSince } from "../../../utils/func";
 import { FaSignOutAlt, FaTelegramPlane } from "react-icons/fa";
 import { defaultUserAvatar } from "../../../assets/img";
 

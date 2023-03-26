@@ -2,7 +2,6 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import useCreateMess from "../../../../hooks/useCreateMess";
 import { userSelector } from "../../../../store/User";
 import { IUser } from "../../../../types/user.type";
 import {
@@ -13,7 +12,7 @@ import {
 
 const FriendList = () => {
   const [list, setList] = useState<IUser[]>();
-  const { userInfo } = useSelector(userSelector);
+  const { userInfo, friendList } = useSelector(userSelector);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -20,7 +20,7 @@ const Center = () => {
 
   return (
     <div className="flex flex-col gap-10 pb-3 h-full">
-      <StatusBox setIsUpdate={setIsUpdate} />
+      <StatusBox listPost={listPost} setListPost={setListPost} />
       {listPost &&
         listPost.map((post) => (
           <Post

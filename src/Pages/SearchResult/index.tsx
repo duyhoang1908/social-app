@@ -20,7 +20,7 @@ const SearchResult = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await searchUserByName(name as string);
+        const data = await searchUserByName(name?.toLowerCase() as string);
         setListUser(data);
       } catch (error) {
         toast("Đã có lỗi xảy ra vui lòng thử lại sau.");

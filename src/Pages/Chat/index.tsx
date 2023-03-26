@@ -1,7 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
-import useFireStore from "../../hooks/useFireStore";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import LayoutWithHeader from "../../Layouts/LayoutWithHeader";
 
 import { userSelector } from "../../store/User";

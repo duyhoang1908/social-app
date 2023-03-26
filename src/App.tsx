@@ -10,8 +10,6 @@ import { userSelector, userSlice } from "./store/User";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { privateRoutes, publicRoutes } from "./router";
-import { userInfo } from "os";
-import { IUser } from "./types/user.type";
 
 function App() {
   return (
@@ -49,6 +47,9 @@ const CheckUser = () => {
     const fetchData = async () => {
       const userData = await getUserWithUid(data.uid);
       dispatch(userSlice.actions.setUser(userData));
+      if (userData.hasOwnProperty("friendList")) {
+        dispatch(userSlice.actions.setFriendList(userInfo.friendList));
+      }
     };
     if (typeof value === "string") {
       fetchData();

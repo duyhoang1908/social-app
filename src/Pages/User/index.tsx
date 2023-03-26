@@ -1,10 +1,13 @@
 import { nanoid } from "@reduxjs/toolkit";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Post from "../../Components/Home/Center/Post";
 import BackgroundImage from "../../Components/UserPage/BackgroundImage";
+import { db } from "../../firebase/config";
 import LayoutWithHeader from "../../Layouts/LayoutWithHeader";
 import { userSelector, userSlice } from "../../store/User";
 import {
@@ -16,12 +19,15 @@ import {
 
 const UserPage = () => {
   const { uid } = useParams();
-  const { userInfo } = useSelector(userSelector);
+  const { userInfo, friendList } = useSelector(userSelector);
+  console.log(friendList);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [user, setUser] = useState<any>();
   const [userPost, setUserPost] = useState<any[]>();
-  const [isUpdate, setIsUpdate] = useState(null);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [isFriend, setIsFriend] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +41,13 @@ const UserPage = () => {
       } catch (error) {}
     };
 
+    const checkFreind = () => {
+      if (friendList) {
+        let check = friendList.some((item: any) => item.uid === uid);
+        setIsFriend(check);
+      }
+    };
+    checkFreind();
     fetchData();
   }, [uid, isUpdate]);
 
@@ -61,19 +74,40 @@ const UserPage = () => {
     }
   };
 
-  // const addFriend = async (data: IAddFriend) => {
-  //   try {
-  //     const userRef = doc(db, "user", userInfo.id);
-  //     let fList = friendList ? [...friendList, data] : [data];
-  //     await updateDoc(userRef, {
-  //       friendList: fList,
-  //     });
-  //     dispatch(userSlice.actions.setFriendList(fList));
-  //     toast("Đã thêm bạn.");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const addFriend = async () => {
+    const data = {
+      name: user.displayName,
+      avatar: user.photoURL,
+      uid: user.uid,
+    };
+    try {
+      const userRef = doc(db, "user", userInfo.id);
+      let fList = friendList?.length > 0 ? [...friendList, data] : [data];
+      await updateDoc(userRef, {
+        friendList: fList,
+      });
+      dispatch(userSlice.actions.setFriendList(fList));
+      toast("Đã thêm bạn.");
+    } catch (error) {
+      toast("Đã có lỗi xảy ra");
+      console.log(error);
+    }
+  };
+
+  const deleteFriend = async () => {
+    try {
+      const newFlist = friendList.filter((item: any) => item.uid !== user.uid);
+      const userRef = doc(db, "user", userInfo.id);
+      await updateDoc(userRef, {
+        friendList: newFlist,
+      });
+      dispatch(userSlice.actions.setFriendList(newFlist));
+      toast("Đã hủy kết bạn.");
+    } catch (error) {
+      toast("Đã có lỗi xảy ra");
+      console.log(error);
+    }
+  };
 
   return (
     <LayoutWithHeader>
@@ -111,21 +145,23 @@ const UserPage = () => {
             </p>
           </div>
           <div className="flex items-center gap-5">
-            {/* {!friendList.includes(uid) && userInfo.uid !== uid && (
+            {!isFriend && userInfo.uid !== uid && (
               <button
-                onClick={() =>
-                  addFriend({
-                    displayName: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL,
-                    uid: user.photoURL,
-                  })
-                }
+                onClick={addFriend}
                 className="bg-green-500 hover:bg-green-600 text-lg font-semibold text-white px-5 py-3 rounded-2xl"
               >
                 Kết bạn
               </button>
-            )} */}
+            )}
+
+            {isFriend && userInfo.uid !== uid && (
+              <button
+                onClick={deleteFriend}
+                className="bg-green-500 hover:bg-green-600 text-lg font-semibold text-white px-5 py-3 rounded-2xl"
+              >
+                Hủy kết bạn
+              </button>
+            )}
 
             {uid !== userInfo.uid && (
               <button

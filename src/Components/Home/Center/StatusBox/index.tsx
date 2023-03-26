@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaImage, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -7,11 +7,12 @@ import { userSelector } from "../../../../store/User";
 import { IPost } from "../../../../types/post.type";
 import { uploadNewPost } from "../../../../utils/connectFirebase";
 
-interface IStatusBoxProps {
-  setIsUpdate: Function;
-}
+type IStatusBoxProps = {
+  setListPost: React.Dispatch<React.SetStateAction<any[] | undefined>>;
+  listPost: any[] | undefined;
+};
 
-const StatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
+const StatusBox = ({ listPost, setListPost }: IStatusBoxProps) => {
   const { userInfo } = useSelector(userSelector);
   const dispatch = useDispatch();
   const { statusModal } = useSelector(modalSelector);
@@ -28,12 +29,14 @@ const StatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
         <span className="text-sm md:text-base">{`${userInfo.displayName} ơi bạn đang nghĩ gì thế?`}</span>
       </div>
 
-      {statusModal && <DeltaiStatusBox setIsUpdate={setIsUpdate} />}
+      {statusModal && (
+        <DeltaiStatusBox listPost={listPost} setListPost={setListPost} />
+      )}
     </div>
   );
 };
 
-export const DeltaiStatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
+export const DeltaiStatusBox = ({ listPost, setListPost }: IStatusBoxProps) => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(userSelector);
 
@@ -76,16 +79,19 @@ export const DeltaiStatusBox = ({ setIsUpdate }: IStatusBoxProps) => {
       resetImg();
       setPostContent("");
       dispatch(modalSlide.actions.toggleStatusModal());
-      if (data.image) {
-        toast("Bài đăng đang được xử lý");
+
+      // Cap nhap UI truoc
+      if (listPost?.length) {
+        setListPost([...listPost, data]);
       } else {
-        toast("Đăng bài thành công!");
+        setListPost([data]);
       }
+      toast("Đăng bài thành công!");
     } catch (error) {
       toast("Đã có lỗi xảy ra");
     }
 
-    setIsUpdate(null);
+    // setIsUpdate(true);
   };
 
   const handleToggleStatusModal = () => {

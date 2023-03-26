@@ -27,7 +27,10 @@ export const TimeSince = (date: any) => {
 export const generateKeywords = (displayName: string) => {
   // liet ke tat cac hoan vi. vd: name = ["David", "Van", "Teo"]
   // => ["David", "Van", "Teo"], ["David", "Teo", "Van"], ["Teo", "David", "Van"],...
-  const name = displayName.split(" ").filter((word) => word);
+  const name = displayName
+    .toLowerCase()
+    .split(" ")
+    .filter((word) => word);
 
   const length = name.length;
   let flagArray: any[];

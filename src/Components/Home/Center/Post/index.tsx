@@ -1,20 +1,22 @@
 import { nanoid } from "@reduxjs/toolkit";
 import { db } from "../../../../firebase/config";
 import { useState } from "react";
-import { FaComment } from "react-icons/fa";
+import { FaAngleDown, FaComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { userSelector } from "../../../../store/User";
 import { IComment, IPosts } from "../../../../types/post.type";
 import { TimeSince } from "../../../../utils/func";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import ImgModal from "../ImgModal";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { type } from "os";
 
-interface ISinglePost {
+type ISinglePost = {
   post: IPosts;
   postID: String;
-  setIsUpdate: Function;
-}
+  setIsUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 // interface IComments {
 //   comment: IComment;
@@ -42,26 +44,50 @@ const Post = ({ post, postID, setIsUpdate }: ISinglePost) => {
         comment: cmtData,
       });
       setComment("");
-      setIsUpdate(null);
+      setIsUpdate(true);
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deletePost = async () => {
+    try {
+      await deleteDoc(doc(db, "posts", postID as string));
+      toast("Yêu cầu đang được xử lý.");
+    } catch (error) {
+      toast("Đã có lỗi xảy ra.");
       console.log(error);
     }
   };
 
   return (
     <div className="py-3 px-4 bg-white rounded-2xl">
-      <div className="flex items-center gap-3 pb-4">
-        <img
-          className="w-10 h-10 rounded-full object-cover"
-          src={post.userAvatar}
-          alt="avatar"
-        />
-        <div className="flex flex-col">
-          <Link to={`/user/${post.uid}`} className="text-base font-semibold">
-            {post.userName}
-          </Link>
-          <p className="text-sm">{`${TimeSince(post.createAt)} trước.`}</p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 pb-4">
+          <img
+            className="w-10 h-10 rounded-full object-cover"
+            src={post.userAvatar}
+            alt="avatar"
+          />
+          <div className="flex flex-col">
+            <Link to={`/user/${post.uid}`} className="text-base font-semibold">
+              {post.userName}
+            </Link>
+            <p className="text-sm">{`${TimeSince(post.createAt)} trước.`}</p>
+          </div>
         </div>
+
+        {userInfo.uid === post.uid && (
+          <div className="relative group text-xl cursor-pointer">
+            <FaAngleDown />
+            <div
+              onClick={deletePost}
+              className="absolute right-0 hidden group-hover:block text-base min-w-[200px] bg-white border shadow-sm py-2 px-4 rounded-2xl hover:bg-gray-100"
+            >
+              Xóa bài viết
+            </div>
+          </div>
+        )}
       </div>
 
       {post.content && <div className="text-base my-3">{post.content}</div>}
