@@ -1,4 +1,6 @@
-export interface IUser {
+import { type } from "os";
+
+export type IUser = {
   displayName: string;
   email: string;
   id: string;
@@ -6,17 +8,11 @@ export interface IUser {
   photoURL: string;
   uid: string;
   friendList?: any[];
-}
+};
 
-export interface LocalStorageUser {
-  displayName: string;
-  email: string;
-  uid: string;
-}
+export type LocalStorageUser = Pick<IUser, "displayName" | "email" | "uid">;
 
-export interface IAddFriend {
-  displayName: string;
-  email: string;
-  uid: string;
-  photoURL: string;
-}
+export type IAddFriend = Pick<
+  IUser,
+  "displayName" | "email" | "uid" | "photoURL"
+>;

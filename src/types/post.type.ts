@@ -8,17 +8,7 @@ export interface IComment {
   id: string;
 }
 
-export interface IPost {
-  userName: string;
-  userAvatar: string;
-  uid: string;
-  content: string;
-  image?: any;
-  comment: any[];
-  createAt: number;
-}
-
-export interface IPosts {
+export type IPosts = {
   userName: string;
   userAvatar: string;
   uid: string;
@@ -27,4 +17,6 @@ export interface IPosts {
   comment: any[];
   createAt: number;
   id: string;
-}
+};
+
+export type IPost = Omit<IPosts, "id">;
