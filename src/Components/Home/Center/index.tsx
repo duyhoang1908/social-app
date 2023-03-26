@@ -22,14 +22,16 @@ const Center = () => {
     <div className="flex flex-col gap-10 pb-3 h-full">
       <StatusBox listPost={listPost} setListPost={setListPost} />
       {listPost &&
-        listPost.map((post) => (
-          <Post
-            setIsUpdate={setIsUpdate}
-            key={post.id}
-            postID={post.id}
-            post={post}
-          />
-        ))}
+        listPost
+          .sort((a, b) => b.createAt - a.createAt)
+          .map((post) => (
+            <Post
+              setIsUpdate={setIsUpdate}
+              key={post.id}
+              postID={post.id}
+              post={post}
+            />
+          ))}
     </div>
   );
 };

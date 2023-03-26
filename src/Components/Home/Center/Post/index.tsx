@@ -1,8 +1,8 @@
 import { nanoid } from "@reduxjs/toolkit";
-import { db } from "../../../../firebase/config";
 import { useState } from "react";
 import { FaAngleDown, FaComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { db } from "../../../../firebase/config";
 import { userSelector } from "../../../../store/User";
 import { IComment, IPosts } from "../../../../types/post.type";
 import { TimeSince } from "../../../../utils/func";
@@ -10,7 +10,6 @@ import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import ImgModal from "../ImgModal";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { type } from "os";
 
 type ISinglePost = {
   post: IPosts;

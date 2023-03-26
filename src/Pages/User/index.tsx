@@ -112,19 +112,6 @@ const UserPage = () => {
   return (
     <LayoutWithHeader>
       <div className="max-w-[1200px] h-full overflow-y-auto m-auto p-4">
-        {/* <div className="">
-          {user.backgroundImage && (
-            <img src={userInfo.backgroundImage} alt="backgroundImage" />
-          )}
-          {!user.backgroundImage && (
-            <div className="flex w-full h-full">
-              <label htmlFor="bg-img" className="">
-                Thêm ảnh nền.
-              </label>{" "}
-              <input type="file" name="bg-img" id="" className="hidden" />
-            </div>
-          )}
-        </div> */}
         <BackgroundImage
           url={user?.backgroundImage || ""}
           uid={uid}
@@ -174,15 +161,18 @@ const UserPage = () => {
           </div>
         </div>
 
-        {(userPost?.length as number) > 0 &&
-          userPost?.map((post) => (
-            <Post
-              post={post}
-              postID={post.id}
-              key={post.id}
-              setIsUpdate={setIsUpdate}
-            ></Post>
-          ))}
+        {(userPost?.length as number) > 0 && (
+          <div className="flex flex-col gap-10 pb-3 h-full">
+            {userPost?.map((post) => (
+              <Post
+                post={post}
+                postID={post.id}
+                key={post.id}
+                setIsUpdate={setIsUpdate}
+              ></Post>
+            ))}
+          </div>
+        )}
 
         {(userPost?.length as number) <= 0 && (
           <div className="text-xl text-center text-[#65676B] py-10 mb-10">
